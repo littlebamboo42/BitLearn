@@ -2,18 +2,20 @@
 # -*- coding: utf-8 -*-
 
 '''
-Block format :
-index
-timestamp
-previous hash
-data
-block hash
+for the future
+    BLOCK STRUCTURE :
+BLOCK SIZE > size in MB
+BLOCK HEADER > version, index, timestamp, nonce, previous_hash
+DATA HEADER > number_of_transactions, merkle_tree_root
+DATA : transactions
 '''
 
 class Block():
-    def __init__(self, index, timestamp, previous_hash, data, hash_digest):
-        self.index = index
-        self.timestamp = timestamp
-        self.previous_hash = previous_hash
-        self.data = data
-        self.hash = hash_digest
+    def __init__(self, index, timestamp, previous_hash, nonce, data):
+        self.index=index
+        self.timestamp=timestamp
+        self.previous_hash=previous_hash
+        self.nonce=nonce
+        #self.merkle_tree_root
+        #self.number_of_transactions
+        self.data=data
