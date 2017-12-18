@@ -10,7 +10,7 @@ except ImportError:
 from hashlib import sha256
 
 #Difficulty adjustement, number of leading 0 in hash
-difficulty=3
+difficulty=5
 #Nonce length adjustment in bytes
 nonce_length=2
 
@@ -25,7 +25,7 @@ def new_block(last_block):
         str(last_block.index)+
         str(last_block.timestamp)+
         str(last_block.previous_hash)+
-        str(last_block.nonce)+
+        str(last_block.nonce)
         ).encode('utf-8')
         ).hexdigest()
     #Proof of work using difficulty setting
@@ -38,7 +38,7 @@ def new_block(last_block):
             str(new_index)+
             str(new_timestamp)+
             str(new_previous_hash)+
-            str(nonce)+
+            str(nonce)
             ).encode('utf-8')
             ).hexdigest()
         #If number of leading 0 greater or equal to difficulty setting, break

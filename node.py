@@ -3,6 +3,10 @@
 
 from genesis import *
 from miner import *
+from generate_key_pair import *
+
+wallet=generate_key_pair()
+print('k : {}\nA : {}'.format(wallet[0], wallet[2]))
 
 #Create the blockchain and start it with the genesis block
 blockchain = [create_genesis_block()]

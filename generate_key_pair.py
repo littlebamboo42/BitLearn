@@ -9,16 +9,18 @@ from hashlib import sha256, new
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
+from utilitybelt import int_to_charset
 
 def generate_key_pair():
+    '''Generate a new random key_pair and address'''
     ### INITIAL PARAMETERS
     #Bitcoin uses SECP256K1 elliptic curve
     elliptic_curve=ec.SECP256K1()
     #from https://en.bitcoin.it/wiki/Private_key
     #Find difference between n and Fp (2**256-2**32-2**9-2**8-2**7-2**6-2**4-1)
     n=int('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141',16)
-    #For the final format of the keys
-    base58='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+    #For the final base58 format of the keys
+    alphabet='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
     ### GENERATE KEY PAIR
     #Generate a satisfactory private key (k), between 1 and n-1. k is
@@ -30,7 +32,7 @@ def generate_key_pair():
         if int(private_key,16) in range(1,n-1):
             break
     #opt : show private key hexadecimal representation
-    #print('k : {}'.format(private_key))
+    #print('k : {}\n'.format(private_key))
 
     #Derive public key (K) from k using the generator point of SECP256K1 (G).
     # K = k * G
@@ -40,7 +42,7 @@ def generate_key_pair():
     public_key=private_key_point.public_key().public_numbers().encode_point()
     #opt : show public key hexadecimal representation 65 bytes :
     #1 byte 0x04, 32 bytes for X coordinate, 32 bytes for Y coordinate
-    #print('K : {}'.format(public_key.hex().upper()))
+    #print('K : {}\n'.format(public_key.hex().upper()))
 
     #Find the RIPEMD160 (RACE Integrity Primitives Evaluation Message Digest)
     #hash of SHA256 (Secure Hash Algorithm) hash of the public key.
@@ -52,15 +54,18 @@ def generate_key_pair():
     #Find the checksum, the first four bytes of the double SHA256 hashing of the
     #intermediate.
     checksum=sha256(sha256(intermediate).digest()).digest()[:4]
+    #Find the address, the intermediate plus the checksum in bytes
+    address_bytes=intermediate+checksum
+    #Base58 conversion from integer removes the leading 0. So here they are
+    #counted to determine the number of 1 at the beginning of the address.
+    n_leading_0=len(address_bytes.hex())-len(address_bytes.hex().lstrip('0'))
+    #Find the base58 address from the number of leading 0 plus the base58 of the
+    #address bytes via integer conversion using utilitybelt.int_to_charset()
+    address=int(n_leading_0/2)*alphabet[0]+int_to_charset(int.from_bytes(address_bytes,byteorder='big'), alphabet)
+    #opt : show the address
+    #print('A : {}'.format(address))
+    return (private_key, public_key.hex().upper(), address)
+    #Tested against http://gobittest.appspot.com/Address
 
-################################################################################
-#Needs base58
-
-    address=(intermediate+checksum).hex().upper()
-    print(address)
-    #base58 conversion
-    # => ADDRESS
-
-    #Sign tx cryptography.hazmat.primitives.asymmetric.ec.ECDSA(sha256())
 if __name__=='__main__':
     generate_key_pair()
