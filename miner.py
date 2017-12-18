@@ -26,7 +26,6 @@ def new_block(last_block):
         str(last_block.timestamp)+
         str(last_block.previous_hash)+
         str(last_block.nonce)+
-        str(last_block.data)
         ).encode('utf-8')
         ).hexdigest()
     #Proof of work using difficulty setting
@@ -40,7 +39,6 @@ def new_block(last_block):
             str(new_timestamp)+
             str(new_previous_hash)+
             str(nonce)+
-            str(new_data)
             ).encode('utf-8')
             ).hexdigest()
         #If number of leading 0 greater or equal to difficulty setting, break
