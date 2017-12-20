@@ -1,23 +1,19 @@
 #!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
-from genesis import *
 from miner import *
 from generate_key_pair import *
 
 wallet=generate_key_pair()
 print('k : {}\nA : {}'.format(wallet[0], wallet[2]))
 
-#Create the blockchain and start it with the genesis block
-blockchain = [create_genesis_block()]
-
-#Size of the blochain to find
+#Size of the blochain to find in number of blocks including genesis block
 size = 5
 
-#Start with the genesis block to mine
-previous_block = blockchain[0]
+#Make a blockchain
+blockchain=[]
 
-#Lengthen the blockchain
+#Create and lengthen the blockchain
 for i in range(0, size):
     block_to_add = new_block(previous_block)
     blockchain.append(block_to_add)

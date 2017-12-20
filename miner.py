@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from time import time
 from block import *
 try :
     from secrets import token_bytes as random_nonce
@@ -14,24 +14,30 @@ difficulty=5
 #Nonce length adjustment in bytes
 nonce_length=2
 
-def new_block(last_block):
+def new_block(last_block=None):
     '''Find the new block, with PoW'''
+    #Create genesis block
+    if last_block==None:
+        new_index=0
+        new_previous_hash='0'
+        new_data='I am the genesis block'
     #Update block header for new block
-    new_index=last_block.index+1
-    new_data='Hi ! I am a new block !'
-    #Should find a way to avoid rehashing
-    new_previous_hash=sha256(
-        (
-        str(last_block.index)+
-        str(last_block.timestamp)+
-        str(last_block.previous_hash)+
-        str(last_block.nonce)
-        ).encode('utf-8')
-        ).hexdigest()
+    else:
+        new_index=last_block.index+1
+        #Should find a way to avoid rehashing
+        new_previous_hash=sha256(
+            (
+            str(last_block.index)+
+            str(last_block.timestamp)+
+            str(last_block.previous_hash)+
+            str(last_block.nonce)
+            ).encode('utf-8')
+            ).hexdigest()
+        new_data='Hi ! I am a new block !'
     #Proof of work using difficulty setting
     while True:
         #timestamp corresponds to the winning try start
-        new_timestamp=datetime.now()
+        new_timestamp=int(time())
         nonce=random_nonce(nonce_length)
         sha3=sha256(
             (
