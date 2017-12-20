@@ -40,7 +40,7 @@ def new_block(last_block):
             ).hexdigest()
         new_data='Hi ! I am a new block !'
     #Calculate reward
-    reward=original_reward/(int(new_index/halving_blocks)+1)
+    reward=original_reward/2**(int(new_index/halving_blocks))
     print(reward)
     #Proof of work using difficulty setting
     while True:
