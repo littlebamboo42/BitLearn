@@ -8,10 +8,12 @@ wallet=generate_key_pair()
 print('k : {}\nA : {}'.format(wallet[0], wallet[2]))
 
 #Size of the blochain to find in number of blocks including genesis block
-size = 5
+size = 10
 
 #Make a blockchain
 blockchain=[]
+
+previous_block=None
 
 #Create and lengthen the blockchain
 for i in range(0, size):

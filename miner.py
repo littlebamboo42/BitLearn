@@ -10,11 +10,16 @@ except ImportError:
 from hashlib import sha256
 
 #Difficulty adjustement, number of leading 0 in hash
-difficulty=5
+difficulty=4
 #Nonce length adjustment in bytes
 nonce_length=2
+#Size of original reward for finding a block
+original_reward=50
+#Number of blocks between rewards halving
+halving_blocks=2
 
-def new_block(last_block=None):
+
+def new_block(last_block):
     '''Find the new block, with PoW'''
     #Create genesis block
     if last_block==None:
@@ -34,6 +39,9 @@ def new_block(last_block=None):
             ).encode('utf-8')
             ).hexdigest()
         new_data='Hi ! I am a new block !'
+    #Calculate reward
+    reward=original_reward/(int(new_index/halving_blocks)+1)
+    print(reward)
     #Proof of work using difficulty setting
     while True:
         #timestamp corresponds to the winning try start
