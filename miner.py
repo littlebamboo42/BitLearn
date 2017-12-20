@@ -3,7 +3,7 @@
 
 from time import time
 from block import *
-try :
+try:
     from secrets import token_bytes as random_nonce
 except ImportError:
     from os import urandom as random_nonce
@@ -39,14 +39,13 @@ def new_block(last_block):
             ).encode('utf-8')
             ).hexdigest()
         new_data='Hi ! I am a new block !'
-    #Calculate reward
+    #Calculate reward for mining block
     reward=original_reward/2**(int(new_index/halving_blocks))
-    print(reward)
     #Proof of work using difficulty setting
     while True:
         #timestamp corresponds to the winning try start
         new_timestamp=int(time())
-        nonce=random_nonce(nonce_length)
+        nonce=int.from_bytes(random_nonce(nonce_length), byteorder='big')
         sha3=sha256(
             (
             str(new_index)+
