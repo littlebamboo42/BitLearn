@@ -41,7 +41,6 @@ def new_block(last_block):
     #Calculate reward for mining block
     reward=original_reward/2**(int(new_index/halving_blocks))
     #Proof of work using difficulty setting
-    start=time()
     for nonce in range((2**32)-1):
         #timestamp corresponds to the winning try start
         new_timestamp=int(time())
@@ -57,7 +56,5 @@ def new_block(last_block):
         #If number of leading 0 greater or equal to difficulty setting, break
         #the previous loop and create the block
         if int(sha3,16)<target:
-            end=time()
-            print('time={} hashes={}'.format(end-start, nonce/(end-start)))
             break
     return Block(new_index, new_previous_hash, new_timestamp, difficulty, nonce, new_data)
