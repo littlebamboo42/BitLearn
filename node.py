@@ -21,11 +21,10 @@ except:
 
 #Create and lengthen the blockchain
 #while True: #main version
-#for testing only
-#Size of the blochain to find in number of blocks including genesis block
-size = 10
-for i in range(0, size):
+#testing only
+for i in range(10):
     block_to_add = new_block(previous_block)
     with open(location+'blockchain.json','a') as blockchain:
         json.dump(vars(block_to_add), blockchain, indent=2)
+    print('block found')
     previous_block = block_to_add

@@ -33,8 +33,8 @@ def new_block(last_block):
         new_previous_hash=sha256(
             (
             str(last_block.index)+
-            str(last_block.timestamp)+
             str(last_block.previous_hash)+
+            str(last_block.timestamp)+
             str(last_block.nonce)
             ).encode('utf-8')
             ).hexdigest()
@@ -49,8 +49,8 @@ def new_block(last_block):
         sha3=sha256(
             (
             str(new_index)+
-            str(new_timestamp)+
             str(new_previous_hash)+
+            str(new_timestamp)+
             str(nonce)
             ).encode('utf-8')
             ).hexdigest()
@@ -58,4 +58,4 @@ def new_block(last_block):
         #the previous loop and create the block
         if len(sha3)-len(sha3.lstrip('0'))>=difficulty:
             break
-    return Block(new_index, new_timestamp, new_previous_hash, nonce, new_data)
+    return Block(new_index, new_previous_hash, new_timestamp, nonce, new_data)
