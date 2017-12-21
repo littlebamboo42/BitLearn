@@ -5,7 +5,7 @@
 for the future
     BLOCK STRUCTURE :
 BLOCK SIZE > size in MB
-BLOCK HEADER > version, index, timestamp, nonce, previous_hash, merkle_tree_root
+BLOCK HEADER > version, previous_hash, merkle_tree_root, timestamp, nonce
 DATA HEADER > number_of_transactions
 DATA : transactions
 '''
@@ -16,7 +16,7 @@ class Block():
         #self.block_size=size
         #Header - 80 bytes
         self.version=1
-        self.index=index
+        self.index=index#for now only, needs removal
         self.previous_hash=previous_hash
         #self.merkle_tree_root
         self.timestamp=timestamp
@@ -24,5 +24,5 @@ class Block():
         self.nonce=nonce
         #Transaction count - 1~9 bytes
         #self.number_of_transactions
-        #Transactions - 999907~999915 from 100000-4-80-1~9
+        #Transactions - 999907~999915 bytes (100000-4-80-1~9)
         self.data=data
