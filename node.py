@@ -15,7 +15,7 @@ location=''
 previous_block=None
 
 try:
-    os.remove(location+'blockchain.txt')
+    os.remove(location+'blockchain.json')
 except:
     pass
 

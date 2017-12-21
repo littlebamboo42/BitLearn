@@ -11,7 +11,7 @@ DATA : transactions
 '''
 
 class Block():
-    def __init__(self, index, previous_hash, timestamp, nonce, data):
+    def __init__(self, index, previous_hash, timestamp, difficulty, nonce, data):
         #Size - 4 bytes
         #self.block_size=size
         #Header - 80 bytes
@@ -20,7 +20,7 @@ class Block():
         self.previous_hash=previous_hash
         #self.merkle_tree_root
         self.timestamp=timestamp
-        #self.difficulty=difficulty
+        self.difficulty=difficulty
         self.nonce=nonce
         #Transaction count - 1~9 bytes
         #self.number_of_transactions
