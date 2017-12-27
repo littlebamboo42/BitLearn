@@ -2,18 +2,22 @@
 # -*- coding: utf-8 -*-
 
 from miner import *
-from generate_key_pair import *
+from keys import *
 import json
 import os
 from time import time
-
-wallet=generate_key_pair()
-print('k : {}\nA : {}'.format(wallet[0], wallet[2]))
 
 #blockchain.dat folder
 location='data/'
 
 previous_block=None
+
+if input('Generate new keys ? (y/n) ').lower()=='n':
+    wallet=derive_key_pair(input('Private key : '))
+else:
+    wallet=generate_key_pair()
+    
+print('k : {}\nA : {}'.format(wallet[0], wallet[2]))
 
 for identifier in range(int('ffff',16)):
     blk_file='{}blk{}.dat'.format(location, format(identifier,'04x'))

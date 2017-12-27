@@ -11,18 +11,15 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from utilitybelt import int_to_charset
 
-def generate_key_pair():
-    '''Generate a new random key_pair and address'''
+def generate_private_key():
+    '''Generate a new random private_key'''
     ### INITIAL PARAMETERS
     #Bitcoin uses SECP256K1 elliptic curve
     elliptic_curve=ec.SECP256K1()
     #from https://en.bitcoin.it/wiki/Private_key
     #Find difference between n and Fp (2**256-2**32-2**9-2**8-2**7-2**6-2**4-1)
     n=int('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141',16)
-    #For the final base58 format of the keys
-    alphabet='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
-    ### GENERATE KEY PAIR
     #Generate a satisfactory private key (k), between 1 and n-1. k is
     #hexadecimal representation  of 256 random binary digits) generate using
     #large random number produced by a Cryptographically Secure Pseudo-Random
@@ -34,6 +31,11 @@ def generate_key_pair():
     #opt : show private key hexadecimal representation
     #print('k : {}\n'.format(private_key))
 
+    return private_key
+
+def derive_public_key(private_key):
+    #Bitcoin uses SECP256K1 elliptic curve
+    elliptic_curve=ec.SECP256K1()
     #Derive public key (K) from k using the generator point of SECP256K1 (G).
     # K = k * G
     #Find the point corresponding to k on the elliptic curve.
@@ -43,7 +45,11 @@ def generate_key_pair():
     #opt : show public key hexadecimal representation 65 bytes :
     #1 byte 0x04, 32 bytes for X coordinate, 32 bytes for Y coordinate
     #print('K : {}\n'.format(public_key.hex().upper()))
+    return public_key
 
+def derive_addres(public_key):
+    #For the final base58 format
+    alphabet='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
     #Find the RIPEMD160 (RACE Integrity Primitives Evaluation Message Digest)
     #hash of SHA256 (Secure Hash Algorithm) hash of the public key.
     #ripemd160 is not in the named constructors so we use new('algo', data).
@@ -64,8 +70,19 @@ def generate_key_pair():
     address=int(n_leading_0/2)*alphabet[0]+int_to_charset(int.from_bytes(address_bytes,byteorder='big'), alphabet)
     #opt : show the address
     #print('A : {}'.format(address))
+    return address
+
+def generate_key_pair():
+    private_key=generate_private_key()
+    public_key=derive_public_key(private_key)
+    address=derive_addres(public_key)
     return (private_key, public_key.hex().upper(), address)
     #Tested against http://gobittest.appspot.com/Address
 
+def derive_key_pair(private_key):
+    public_key=derive_public_key(private_key)
+    address=derive_addres(public_key)
+    return (private_key, public_key.hex().upper(), address)
+    
 if __name__=='__main__':
     generate_key_pair()
