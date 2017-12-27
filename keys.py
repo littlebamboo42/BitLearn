@@ -83,6 +83,6 @@ def derive_key_pair(private_key):
     public_key=derive_public_key(private_key)
     address=derive_addres(public_key)
     return (private_key, public_key.hex().upper(), address)
-    
+
 if __name__=='__main__':
     generate_key_pair()
