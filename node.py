@@ -15,9 +15,13 @@ if not os.path.isdir(blk_dir):
 previous_block=None
 
 if input('Generate new keys ? (y/n) ').lower()=='n':
-    wallet=derive_key_pair(input('Private key : '))
+    private_key=derive_det_private_key(input('Seed ? ').lower())
+    wallet=[private_key]+derive_key_pair(private_key)
 else:
-    wallet=generate_key_pair()
+    if input('Random or Deterministic keys ? (r/d) ').lower()=='r':
+        wallet=generate_random_key_pair()
+    else:
+        wallet=generate_det_key_pair()
 
 print('k : {}\nA : {}'.format(wallet[0], wallet[2]))
 
