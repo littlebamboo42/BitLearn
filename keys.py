@@ -1,32 +1,17 @@
 #!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 
-__doc__ = '''keys module - contains the KeyPair class
+__doc__ = '''contains the KeyPair class
 
-DESCRIPTION
-
-Upon initation, KeyPair does all the work, by default it generates a new seed.
-
-PROPERTIES
-
-__init__(self, generate=True, seed=None)
-
-seed = None                                str
-private_key = self.derive_private_key()    str
-public_key = self.derive_public_key()      str
-
-METHODS
-
-- generate_seed() : [staticmethod] Generate deterministic seed from dictionnary.
-    > return str
-- derive_private_key() : Derive private key from seed.
-    > return str
-- derive_public_key(): Derive 65 bytes hexadecimal public key from private key
-                       with generator point G of SECP256K1 elliptic curve.
-                       1 byte 0x04 + 32 bytes X coord + 32 bytes Y coord
-    > return str
+Upon initation, KeyPair does all the work, by default it generates a seed.
 
 '''
+#PROPERTIES
+
+#seed = None                                str
+#private_key = self.derive_private_key()    str
+#public_key = self.derive_public_key()      str
+
 
 
 try:
@@ -76,13 +61,13 @@ class KeyPair(object):
 
     @staticmethod
     def generate_seed():
-        '''Generate a new deterministic seed'''
+        '''Generate new random deterministic seed from dictionnary.'''
         with open('BIP32/det_dict.txt','r') as dictionnary:
             words = [word.strip() for word in dictionnary]
         return ' '.join(choice(words) for i in range(6))
 
     def derive_private_key(self):
-        '''Derive the private key from the seed'''
+        '''Derive the private key from a seed.'''
         return sha256(self.seed.encode('utf-8')).hexdigest().upper()
 
 #    def generate_private_key():
@@ -97,11 +82,9 @@ class KeyPair(object):
 #        return private_key
 
     def derive_public_key(self):
-        '''Derive public key (K) from k using the generator point G of SECP256K1.
-        K = k * G
-        Find the point corresponding to k on the elliptic curve and derive the
-        public key 65 bytes hexadecimal representation :
-        1 byte 0x04, 32 bytes for X coordinate, 32 bytes for Y coordinate'''
+        '''Derive 65 bytes hexadecimal public key from private key with
+           generator point G of SECP256K1 elliptic curve.
+           1 byte 0x04 + 32 bytes X coordinate + 32 bytes Y coordinate'''
         private_key_point = ec.derive_private_key(int(self.private_key,16),
                                                   ec.SECP256K1(),
                                                   default_backend())

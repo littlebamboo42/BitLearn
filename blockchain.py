@@ -103,8 +103,7 @@ class Blockchain(object):
             self.mempool.append(transaction)
             return
         elif transaction in self.mempool:
-            raise DoubleSpending as error
-            return DoubleSpending
+            raise DoubleSpending
         else :
             return transaction.valid()
 
@@ -136,7 +135,7 @@ class Blockchain(object):
         #Update block header for new block
         else:
             # Initialise new block basic info
-            self.size = # TODO: find and assign size of header + coinbase NOTE: updated in pick_transactions()
+            self.size = 0 # TODO: find and assign size of header + coinbase NOTE: updated in pick_transactions()
             index = self.last_index + 1
             self.reward = current_reward(index) #NOTE: updated in pick_transactions()
             self.pick_transactions() # NOTE: makes self.transactions, updates a bunch
@@ -184,9 +183,10 @@ class Blockchain(object):
                         timestamp,
                         difficulty,
                         nonce,
-                        number_of_transactions
-                        json.dumps(transactions)
+                        number_of_transactions,
+                        json.dumps(self.transactions)
                         )
+                  )
         return
 
     def pick_transactions(self):
