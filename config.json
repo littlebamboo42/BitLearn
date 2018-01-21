@@ -1,0 +1,15 @@
+{
+  "local":{
+    "type":"full",
+    "miner":true,
+    "data_dir":"data"
+  },
+  "network":{
+    "nodes":["127.0.0.1"],
+    "port":"5000",
+    "initial_reward":50,
+    "reward_halving":5,
+    "minimum_difficulty":"1e00ffff",
+    "max_block_size":1000000
+  }
+}
